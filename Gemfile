@@ -7,6 +7,7 @@ gem 'rails', '3.2.7'
 
 
 gem 'faye'
+gem 'thin'
 
 group :development, :test do
 	gem 'sqlite3'

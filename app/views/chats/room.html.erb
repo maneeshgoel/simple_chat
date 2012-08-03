@@ -1,0 +1,34 @@
+<script>
+	$(function() {
+		//new client
+		var client = new Faye.Client('http://maneeshbook:9292/faye');
+		
+		//sub to public
+		var public_subscription = client.subscribe('/messages/public', function(data) {
+			$('<p><p>').html(data.username + ": " + data.msg).appendTo('#chat_room');
+		});
+		
+		//handle form submissions, post
+		$('#new_message_form').submit(function() {
+			//publish
+			client.publish('/messages/public', {
+				username: '<%= session[:username] %>',
+				msg: $('#message').val()
+			});
+			$('#message').val('');
+			return false;
+		});
+	});
+</script>
+<div class="chat_container">
+	<div id="chat_room">
+		<p class="alert">welcome to chat, <%= session[:username] %>! </p>
+	</div>
+	
+	<form id="new_message_form">
+		<input type="text" id="message" name="message">
+		<input type="submit" value="Send">
+	</form>
+</div>
+
+
